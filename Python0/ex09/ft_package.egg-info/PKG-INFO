@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: ft_package
+Version: 0.0.1
+Summary: Sample package for Piscine Python
+Author: kuehara
+License: MIT
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# ft_package
+Sample package for Piscine Python Ex09.
