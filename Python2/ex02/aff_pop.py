@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+from matplotlib.ticker import FuncFormatter
 
 from load_csv import load
 
@@ -39,12 +40,14 @@ def main() -> None:
             print("Error: country not found")
             return
 
+        # Extract data for years 1800-2050
         years = [str(y) for y in range(1800, 2051)]
+        available_years = [y for y in years if y in data.columns]
 
-        sa = data.loc[country_a].reindex(years).apply(convert_population)
-        sb = data.loc[country_b].reindex(years).apply(convert_population)
+        sa = data.loc[country_a, available_years].map(convert_population)
+        sb = data.loc[country_b, available_years].map(convert_population)
 
-        x = list(range(1800, 2051))
+        x = [int(y) for y in available_years]
         plt.plot(x, sa.values, label=country_a)
         plt.plot(x, sb.values, label=country_b)
         plt.title("Population comparison")
@@ -59,7 +62,6 @@ def main() -> None:
                 return f'{value/1_000:.0f}k'
             return f'{value:.0f}'
 
-        from matplotlib.ticker import FuncFormatter
         plt.gca().yaxis.set_major_formatter(FuncFormatter(format_population))
 
         plt.legend()

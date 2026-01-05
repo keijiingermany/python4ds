@@ -1,8 +1,9 @@
+from typing import Optional
 import os
 import pandas as pd
 
 
-def load(path: str) -> pd.DataFrame:
+def load(path: str) -> Optional[pd.DataFrame]:
     """
     Load a CSV dataset and print its dimensions.
     """
@@ -15,7 +16,7 @@ def load(path: str) -> pd.DataFrame:
             print("Error: file not found")
             return None
 
-        df = pd.read_csv(path)
+        df = pd.read_csv(path, header=0)
         print(f"Loading dataset of dimensions {df.shape}")
         return df
     except Exception:

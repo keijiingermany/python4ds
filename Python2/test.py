@@ -4,7 +4,9 @@ import sys
 
 from ex00.load_csv import load
 
+
 def convert_population_simple(value):
+
     """
     Simple conversion for strings like '127k', '29M' or plain numbers.
     - Removes commas, strips whitespace, handles k/K and m/M suffixes.
@@ -27,6 +29,7 @@ def convert_population_simple(value):
     except Exception:
         return float('nan')
 
+
 def main() -> None:
     """
     test: understand pd.to_numeric and M/k conversion
@@ -42,13 +45,13 @@ def main() -> None:
     # ===== 数値変換 =====
     # GDP: may include 'k'/'M' suffixes in some years — use simple converter per-cell
     gdp = gdp.apply(lambda col: col.map(convert_population_simple))
-    
+
     # Life: float 形式 → apply(pd.to_numeric) で大丈夫
     life = life.apply(pd.to_numeric, errors="coerce")
-    
+
     # Population: M/k 形式 → 専用関数で処理 (per-cell)
     pop = pop.apply(lambda col: col.map(convert_population_simple))
-    
+
     # ===== 確認: 年のデータをチェック =====
     year = sys.argv[1] if len(sys.argv) > 1 else "1900"
     print(f"\n=== Year {year} ===")
@@ -58,7 +61,7 @@ def main() -> None:
         print(f"Error: year {year} not found in datasets")
         print("Available year columns (sample):", available[:10])
         return
-    
+
     # ===== 3つをマージ（country index で自動的に結合） =====
     year_1900 = pd.concat([gdp[year], life[year], pop[year]], axis=1)
     year_1900.columns = ["gdp", "life_expectancy", "population"]
@@ -70,6 +73,6 @@ def main() -> None:
     print(f"\n=== Top 5 countries by GDP ({year}) ===")
     print(top5_gdp)
 
+
 if __name__ == "__main__":
     main()
-

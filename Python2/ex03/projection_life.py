@@ -11,7 +11,7 @@ def convert_population(value):
     if pd.isna(value):
         return float('nan')
     s = str(value).strip()
-    
+
     if s.endswith('M'):
         return float(s[:-1]) * 1_000_000
     elif s.endswith('k'):
@@ -41,7 +41,7 @@ def main() -> None:
 
         gdp = gdp_df.set_index("country")[year]
         life = life_df.set_index("country")[year]
-        gdp = gdp.apply(convert_population)
+        gdp = gdp.map(convert_population)
         life = pd.to_numeric(life, errors="coerce")
 
         merged = pd.concat([gdp, life], axis=1).dropna()
