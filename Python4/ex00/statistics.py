@@ -4,27 +4,23 @@ from typing import Any
 
 def ft_statistics(*args: Any, **kwargs: Any) -> None:
     """Calculate statistics based on kwargs instructions."""
-    # Error handling: no args
+    if not kwargs:
+        return
+
     if not args:
         for _ in kwargs.values():
             print("ERROR")
         return
 
-    # Error handling: no kwargs
-    if not kwargs:
-        return
-
-    # Convert to numbers
     try:
         data = sorted([float(x) for x in args])
-    except (ValueError, TypeError):
+    except Exception:
         for _ in kwargs.values():
             print("ERROR")
         return
 
     n = len(data)
 
-    # Process each requested statistic
     for value in kwargs.values():
         if value == "mean":
             mean = sum(data) / n
@@ -36,24 +32,20 @@ def ft_statistics(*args: Any, **kwargs: Any) -> None:
                 median = (data[mid - 1] + data[mid]) / 2
             else:
                 median = data[mid]
-            print(f"median : {median}")
+            print(f"median : {int(median)}")
 
         elif value == "quartile":
-            # Quartile: 25% = index 1, 75% = index 3 for 5 elements
-            # Using simple indexing for quartiles
-            q1 = data[int(n * 0.25)]
-            q3 = data[int(n * 0.75)]
+            q1 = data[n // 4]
+            q3 = data[(n * 3) // 4]
             print(f"quartile : [{float(q1)}, {float(q3)}]")
 
         elif value == "std":
-            # Standard deviation (population)
             mean = sum(data) / n
             variance = sum((x - mean) ** 2 for x in data) / n
             std = variance ** 0.5
             print(f"std : {std}")
 
         elif value == "var":
-            # Variance (population)
             mean = sum(data) / n
             variance = sum((x - mean) ** 2 for x in data) / n
             print(f"var : {variance}")
