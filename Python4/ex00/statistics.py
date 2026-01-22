@@ -32,7 +32,11 @@ def ft_statistics(*args: Any, **kwargs: Any) -> None:
                 median = (data[mid - 1] + data[mid]) / 2
             else:
                 median = data[mid]
-            print(f"median : {int(median)}")
+
+            if median.is_integer():
+                print(f"median : {int(median)}")
+            else:
+                print(f"median : {median}")
 
         elif value == "quartile":
             q1 = data[n // 4]
